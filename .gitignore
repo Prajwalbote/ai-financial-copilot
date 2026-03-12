@@ -1,0 +1,42 @@
+# ============================================================
+# .gitignore — What NOT to commit to git
+# ============================================================
+
+# SECRETS — Never commit these
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Data — Often too large for git (use DVC or S3 in production)
+data/raw/
+data/processed/
+data/embeddings/
+
+# Models — Large binary files, store on HuggingFace Hub or S3
+data/models/
+
+# Logs
+logs/
+
+# Vector DB files (can be large)
+data/vectordb/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

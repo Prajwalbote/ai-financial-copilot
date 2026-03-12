@@ -1,0 +1,48 @@
+# ============================================================
+# AI Financial Research Copilot — Dependencies
+# ============================================================
+
+# --- Core ML/AI ---
+torch==2.6.0
+transformers
+sentence-transformers
+datasets
+peft
+accelerate
+
+# --- Vector Database ---
+faiss-cpu
+chromadb
+
+# --- Document Processing ---
+pypdf
+python-docx
+beautifulsoup4
+requests
+tiktoken
+
+# --- ML / Data Science ---
+scikit-learn
+pandas
+numpy
+yfinance
+
+# --- API Backend ---
+fastapi
+uvicorn
+pydantic
+python-multipart
+
+# --- Frontend ---
+streamlit
+
+# --- Utilities ---
+python-dotenv
+pyyaml
+loguru
+tqdm
+
+# --- Testing ---
+pytest
+pytest-asyncio
+httpx

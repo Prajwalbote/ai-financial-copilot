@@ -1,0 +1,64 @@
+# ── docker-compose.yml — Run Everything Together ────────────
+#
+# WHY DOCKER COMPOSE?
+# Running API and UI as separate containers is complex.
+# Compose defines both services in one file and handles:
+# - Networking between containers
+# - Startup order (API before UI)
+# - Volume mounting (persistent data)
+# - Environment variables
+#
+# Usage:
+#   docker-compose up      ← start everything
+#   docker-compose down    ← stop everything
+#   docker-compose logs    ← see all logs
+
+version: '3.8'
+
+services:
+
+  # ── FastAPI Backend ───────────────────────────────────────
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    container_name: financial_copilot_api
+    ports:
+      - "8000:8000"       # host:container
+    volumes:
+      # Mount data directory so models/indexes persist
+      # between container restarts
+      - ../data:/app/data
+      - ../logs:/app/logs
+    environment:
+      - ENVIRONMENT=production
+      - PYTHONUNBUFFERED=1    # Show logs immediately
+    restart: unless-stopped   # Auto-restart on crash
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── Streamlit Frontend ────────────────────────────────────
+  ui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.ui
+    container_name: financial_copilot_ui
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://api:8000   # Use container name, not localhost
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      api:
+        condition: service_healthy    # Wait for API to be healthy
+    restart: unless-stopped
+
+# ── Shared Network ────────────────────────────────────────
+# Containers communicate via this network
+# UI calls "http://api:8000" instead of "http://localhost:8000"
+networks:
+  default:
+    name: financial_copilot_network

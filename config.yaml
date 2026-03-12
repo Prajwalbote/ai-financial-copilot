@@ -1,0 +1,69 @@
+project:
+  name: "AI Financial Research Copilot"
+  version: "1.0.0"
+  environment: "development"
+
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  embeddings_cache: "data/embeddings"
+  vector_db: "data/vectordb"
+  models: "data/models"
+
+chunking:
+  chunk_size: 512
+  chunk_overlap: 50
+  min_chunk_length: 100
+
+embedding:
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  embedding_dim: 384
+  batch_size: 32
+  device: "cpu"
+
+vector_db:
+  provider: "faiss"
+  index_type: "Flat"
+  top_k: 5
+
+llm:
+  model_name: "google/flan-t5-base"
+  max_input_tokens: 1024
+  max_new_tokens: 256
+  temperature: 0.3
+  device: "cpu"
+
+retrieval:
+  top_k: 5
+  similarity_threshold: 0.3
+
+finetuning:
+  base_model: "google/flan-t5-base"
+  output_dir: "data/models/finetuned"
+  num_epochs: 3
+  batch_size: 8
+  learning_rate: 3.0e-4
+  use_lora: true
+  lora_r: 16
+  lora_alpha: 32
+
+ml_model:
+  lookback_days: 30
+  features:
+    - "close"
+    - "volume"
+    - "rsi"
+    - "macd"
+    - "bb_upper"
+    - "bb_lower"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  reload: true
+
+logging:
+  level: "INFO"
+  format: "{time} | {level} | {name} | {message}"
+  log_file: "logs/app.log"
