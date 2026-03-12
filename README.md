@@ -162,7 +162,7 @@ financial_copilot/
 ### Local Development
 ```bash
 # 1. Clone and setup
-git clone https://github.com/YOUR_USERNAME/ai-financial-copilot
+git clone https://github.com/Prajwalbote/ai-financial-copilot
 cd ai-financial-copilot
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\Activate.ps1
